@@ -1,6 +1,6 @@
-import "dotenv/config";
-import {mongoose} from "./db/connect.js";
 import express from "express";
+import "dotenv/config";
+import {connectDB} from "./db/connect.js";
 import {tasks} from "./router/tasks.js";
 
 const app = express();
@@ -16,6 +16,15 @@ app.get("/", (req, res) => {
   res.send("Task manager app");
 });
 
-app.listen(port, (req, res) => {
-  console.log(`server running on port ${port}`);
-});
+const start = async () => {
+  try {
+    await connectDB(process.env.DB_CONNECTION_STRING);
+    app.listen(port, (req, res) => {
+      console.log(`server running on port ${port}`);
+    });
+  } catch (error) {
+    console.error();
+  }
+};
+
+start();

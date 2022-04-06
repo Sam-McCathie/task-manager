@@ -1,6 +1,7 @@
+import "dotenv/config";
+import {mongoose} from "./db/connect.js";
 import express from "express";
 import {tasks} from "./router/tasks.js";
-// import {task} from "./router/task.js";
 
 const app = express();
 const port = 9000;
@@ -10,7 +11,6 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/tasks", tasks);
-// app.use("/api/v1/task/:id", task);
 
 app.get("/", (req, res) => {
   res.send("Task manager app");

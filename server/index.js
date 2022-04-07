@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import "dotenv/config";
 import {connectDB} from "./db/connect.js";
 import {tasks} from "./router/tasks.js";
@@ -7,14 +8,12 @@ const app = express();
 const port = 9000;
 
 // middleware
+// app.use(cors());
+app.use(express.static("../client"));
 app.use(express.json());
 
 // routes
 app.use("/api/v1/tasks", tasks);
-
-app.get("/", (req, res) => {
-  res.send("Task manager app");
-});
 
 const start = async () => {
   try {

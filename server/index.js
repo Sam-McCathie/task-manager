@@ -4,6 +4,7 @@ import "dotenv/config";
 import {connectDB} from "./db/connect.js";
 import {tasks} from "./router/tasks.js";
 import {notFound} from "./middleware/not-found.js";
+import {errorHandlerMiddleware} from "./middleware/error-handler.js";
 
 const app = express();
 const port = 9000;
@@ -16,6 +17,7 @@ app.use(express.json());
 // routes
 app.use("/api/v1/tasks", tasks);
 app.use(notFound); //fallback route --> when user enters invalid route
+app.use(errorHandlerMiddleware);
 
 const start = async () => {
   try {

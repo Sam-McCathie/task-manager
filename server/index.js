@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import {connectDB} from "./db/connect.js";
 import {tasks} from "./router/tasks.js";
+import {notFound} from "./middleware/not-found.js";
 
 const app = express();
 const port = 9000;
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/tasks", tasks);
+app.use(notFound); //fallback route --> when user enters invalid route
 
 const start = async () => {
   try {

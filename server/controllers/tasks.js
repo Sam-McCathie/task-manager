@@ -1,14 +1,17 @@
 import task from "../models/task.js";
+import {asyncWrapper} from "../middleware/async.js";
 
-const getTasks = async (req, res) => {
-  try {
-    const tasks = await task.find({});
-    res.status(201).json({tasks});
-  } catch (error) {
-    res.status(500).json({msg: "error"});
-  }
-};
+// asyncWrapper -> added so try catch block doesn't need to be repeated
+// - all the below controllers could be converted
+const getTasks = asyncWrapper(async (req, res) => {
+  const tasks = await task.find({});
+  res.status(201).json({tasks});
+  // res.status(201).json({tasks, amount: tasks.length}); // adding length to res
+  // res.status(201).json({status: "success", data: {tasks}, amount: tasks.length}); // adding a status
+  res.status(500).json({status: "success", msg: error});
+});
 
+// Example of simple try catch compared to above
 const createTask = async (req, res) => {
   try {
     const Task = await task.create(req.body);

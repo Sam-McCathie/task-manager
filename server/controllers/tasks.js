@@ -1,5 +1,6 @@
 import task from "../models/task.js";
 import {asyncWrapper} from "../middleware/async.js";
+import {createCustomError} from "../errors/custom-error.js";
 
 // Example of simple try catch compared to above
 const getTasks = async (req, res) => {
@@ -21,11 +22,16 @@ const createTask = asyncWrapper(async (req, res) => {
   res.status(201).json(Task);
 });
 
-const getTask = asyncWrapper(async (req, res) => {
+const getTask = asyncWrapper(async (req, res, next) => {
   const {id: taskID} = req.params;
   const Task = await task.findOne({_id: taskID});
   if (!Task) {
-    return res.status(404).json({msg: `No task with id = ${taskID}`}); // handles invalid id
+    return next(createCustomError("Task Not Found Matey", 404));
+    // below javascript error object is replaced by the above custim error message.
+    // using inbuild javascript error object
+    // const error = new Error("Task Not Found");
+    // error.status = 404;
+    // return next(error);
   }
   res.status(201).json(Task);
 });

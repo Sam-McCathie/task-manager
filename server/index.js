@@ -7,7 +7,7 @@ import {notFound} from "./middleware/not-found.js";
 import {errorHandlerMiddleware} from "./middleware/error-handler.js";
 
 const app = express();
-const port = 9000;
+const port = process.env.PORT || 9000; // if PORT exists return port else default to 9000
 
 // middleware
 // app.use(cors());
